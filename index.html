@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2e9">
+  <title>Friendship Garden</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Friendship Garden home">
+      <span class="brand-mark" aria-hidden="true">✿</span>
+      <span>Friendship Garden</span>
+    </a>
+    <div class="header-tools" role="group" aria-label="Text size controls">
+      <span>Text size</span>
+      <button class="size-button" id="text-smaller" type="button" aria-label="Make text smaller">A−</button>
+      <button class="size-button" id="text-larger" type="button" aria-label="Make text larger">A+</button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section id="welcome-screen" class="welcome-screen">
+      <div class="welcome-copy">
+        <p class="eyebrow">A little care, growing together</p>
+        <h1>Friendship grows<br>when we show up for one another.</h1>
+        <p class="lead">A calm, private place for a small circle of friends to share a thought, offer a kind word, and grow a garden together.</p>
+        <p class="plain-note">There is no score, timer, or pressure to keep up. Every activity is optional, and you can skip anything without explaining why.</p>
+        <button class="button button-secondary" id="demo-button" type="button">Explore the garden demo</button>
+      </div>
+
+      <div class="welcome-card">
+        <h2>Start with your circle</h2>
+        <p>Use a display name. You do not need to share a real name or personal details.</p>
+        <form id="create-form" class="stack-form">
+          <label for="create-name">Your display name</label>
+          <input id="create-name" name="displayName" maxlength="32" autocomplete="nickname" required>
+          <button class="button button-primary" type="submit">Create a private circle</button>
+        </form>
+        <div class="form-divider"><span>or join friends</span></div>
+        <form id="join-form" class="stack-form">
+          <label for="join-code">Invite code</label>
+          <input id="join-code" name="code" maxlength="8" autocomplete="off" autocapitalize="characters" placeholder="8 letters or numbers" required>
+          <label for="join-name">Your display name</label>
+          <input id="join-name" name="displayName" maxlength="32" autocomplete="nickname" required>
+          <button class="button button-outline" type="submit">Join a circle</button>
+        </form>
+        <p id="welcome-error" class="error-message" role="alert" hidden></p>
+      </div>
+      <p class="welcome-footnote">For friendly social connection. This is not a crisis service or a substitute for professional support.</p>
+    </section>
+
+    <section id="garden-screen" class="garden-screen" hidden>
+      <div class="garden-topline">
+        <div>
+          <p class="eyebrow">Your shared space</p>
+          <h1 id="garden-title">Our Friendship Garden</h1>
+          <p class="subheading" id="garden-subtitle"></p>
+        </div>
+        <button class="button button-text" id="leave-button" type="button">Leave this circle</button>
+      </div>
+
+      <section class="garden-panel" aria-labelledby="garden-visual-title">
+        <div class="garden-panel-heading">
+          <div>
+            <h2 id="garden-visual-title">Growing together</h2>
+            <p id="growth-copy" aria-live="polite"></p>
+          </div>
+          <button class="button button-outline button-small" id="invite-button" type="button">Show invite code</button>
+        </div>
+        <p id="invite-code" class="invite-code" hidden></p>
+        <div id="garden-art" class="garden-art" role="img" aria-label="A peaceful garden with flowers added by the circle"></div>
+        <p class="garden-caption">Every shared thought adds a flower. There is no expected pace.</p>
+      </section>
+
+      <div class="garden-columns">
+        <section class="activity-panel" aria-labelledby="activity-title">
+          <p class="eyebrow">Choose what feels right</p>
+          <h2 id="activity-title">A small way to connect</h2>
+          <div class="activity-buttons">
+            <button class="activity-choice" type="button" data-activity="prompt">
+              <span class="choice-icon" aria-hidden="true">✎</span><span><strong>Answer a gentle prompt</strong><small>Share a thought, or skip it</small></span>
+            </button>
+            <button class="activity-choice" type="button" data-activity="tip">
+              <span class="choice-icon" aria-hidden="true">↗</span><span><strong>Share a practical tip</strong><small>Something that may help a friend</small></span>
+            </button>
+            <button class="activity-choice" type="button" data-activity="memory">
+              <span class="choice-icon" aria-hidden="true">♡</span><span><strong>Share a favorite memory</strong><small>A moment you would like to remember</small></span>
+            </button>
+            <button class="activity-choice" type="button" data-activity="kindness">
+              <span class="choice-icon" aria-hidden="true">❀</span><span><strong>Send a kind note</strong><small>Choose an encouraging message</small></span>
+            </button>
+          </div>
+          <p class="gentle-reminder">You can pass on any activity. Nothing is lost when you take a break.</p>
+        </section>
+
+        <section class="members-panel" aria-labelledby="members-title">
+          <p class="eyebrow">A circle of friends</p>
+          <h2 id="members-title">Circle members</h2>
+          <ul id="member-list" class="member-list"></ul>
+        </section>
+      </div>
+
+      <section class="feed-panel" aria-labelledby="feed-title">
+        <div>
+          <p class="eyebrow">Shared, at your own pace</p>
+          <h2 id="feed-title">Recent notes</h2>
+        </div>
+        <div id="activity-feed" class="activity-feed" aria-live="polite"></div>
+      </section>
+    </section>
+    <div id="live-message" class="visually-hidden" aria-live="polite"></div>
+  </main>
+
+  <dialog id="activity-dialog" aria-labelledby="dialog-title">
+    <form id="activity-form" method="dialog">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow" id="dialog-eyebrow">A gentle activity</p>
+          <h2 id="dialog-title"></h2>
+        </div>
+        <button class="icon-button" id="dialog-close" type="button" aria-label="Close activity">×</button>
+      </div>
+      <p id="prompt-text" class="prompt-text" hidden></p>
+      <label id="recipient-label" for="recipient-select" hidden>Send this note to</label>
+      <select id="recipient-select" hidden></select>
+      <label id="kind-message-label" for="kindness-message" hidden>Choose an encouraging message</label>
+      <select id="kindness-message" hidden></select>
+      <label class="sr-label" for="activity-text" id="activity-text-label">Your message</label>
+      <textarea id="activity-text" maxlength="500" rows="5" placeholder="Write only what you feel comfortable sharing."></textarea>
+      <p class="character-count" id="character-count">0 of 500 characters</p>
+      <div id="message-preview" class="message-preview" hidden>
+        <h3>Preview your note</h3>
+        <p id="preview-content"></p>
+      </div>
+      <p id="dialog-error" class="error-message" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button class="button button-text" id="skip-button" type="button">Skip this activity</button>
+        <button class="button button-outline" id="preview-button" type="button">Preview</button>
+        <button class="button button-primary" id="post-button" type="button" disabled>Share with the circle</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="report-dialog" aria-labelledby="report-title">
+    <form id="report-form" method="dialog">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">For circle wellbeing</p><h2 id="report-title">Report a concern</h2></div>
+        <button class="icon-button" id="report-close" type="button" aria-label="Close report form">×</button>
+      </div>
+      <label for="report-reason">What would you like the circle creator to know?</label>
+      <textarea id="report-reason" maxlength="300" rows="4" placeholder="Please keep this brief."></textarea>
+      <p class="privacy-note">A report is saved for this local circle. It is not sent to an emergency or support service.</p>
+      <p id="report-error" class="error-message" role="alert" hidden></p>
+      <div class="dialog-actions"><button class="button button-text" id="report-cancel" type="button">Cancel</button><button class="button button-primary" id="report-submit" type="submit">Send report</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
